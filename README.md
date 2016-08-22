@@ -7,7 +7,7 @@ run with `docker-compose up`
 accepts:
 
 ```json
-{ "metric": "your.series.name:1|c" }
+{   "metric": "your.series.name:1|c" }
 {
     "metrics": ["your.first.series:1|c",
               "your.second.series:1|c"]
