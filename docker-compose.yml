@@ -4,12 +4,4 @@ services:
         build: router
         ports:
             - 8080:8080
-        links:
-            - statsite
-
-    statsite:
-        image: alpine
-        ports:
-            - "8125:8125/udp"
-        command: nc -kl 8125
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"strings"
 	"net/http"
 	"encoding/json"
 	
@@ -12,6 +13,7 @@ import (
 
 type Metric struct{
 	Metric	string
+	Metrics []string
 }
 
 func main() {
@@ -24,13 +26,13 @@ func main() {
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Welcome hi")
+	fmt.Fprintln(w, "")
 }
 
 func Graphite(w http.ResponseWriter, r *http.Request) {
 	var m Metric
 	if r.Body == nil {
-		fmt.Fprintln(w, "Hay")
+		fmt.Fprintln(w, "")
 		return
 	}
 	err := json.NewDecoder(r.Body).Decode(&m)
@@ -38,8 +40,13 @@ func Graphite(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 400)
 		return
 	}
-	SendUDP(m.Metric)
-	fmt.Println(m.Metric)
+
+	if m.Metric != "" {
+		m.Metrics = append(m.Metrics, m.Metric)
+	}
+
+	fmt.Println(strings.Join(m.Metrics, "\n"))
+	go SendUDP(strings.Join(m.Metrics, "\n"))
 
 }
 
