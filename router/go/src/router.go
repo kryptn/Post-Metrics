@@ -4,9 +4,14 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"encoding/json"
 	
 	"github.com/gorilla/mux"
 )
+
+type Metric struct{
+	Metric	string
+}
 
 func main() {
 
@@ -22,6 +27,17 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func Graphite(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Grahpite page")
+	var m Metric
+	if r.Body == nil {
+		fmt.Fprintln(w, "Hay")
+		return
+	}
+	err := json.NewDecoder(r.Body).Decode(&m)
+	if err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
+	fmt.Println(m.Metric)
+
 }
 
