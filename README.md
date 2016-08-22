@@ -1,14 +1,21 @@
 # Post-Metrics
 
-doin a thing
-
-Ideally listens for a POST request with json. Passes the `metric` value onto statsd/statsite at port 8125
+For when you need a REST endpoint router instead of straight UDP for statsd.
 
 run with `docker-compose up`
 
+accepts:
+
+```json
+{ "metric": "your.series.name:1|c" }
+{
+    "metrics": ["your.first.series:1|c",
+              "your.second.series:1|c"
+}
+```
+
 todo:
 
-* make sure udp sending is working, currently unknown
 * add config
 * add influx capability?
 * accidental ddos
