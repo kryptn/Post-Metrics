@@ -10,7 +10,7 @@ accepts:
 { "metric": "your.series.name:1|c" }
 {
     "metrics": ["your.first.series:1|c",
-              "your.second.series:1|c"
+              "your.second.series:1|c"]
 }
 ```
 
