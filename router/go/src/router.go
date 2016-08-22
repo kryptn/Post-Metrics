@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"encoding/json"
 	
@@ -37,7 +38,19 @@ func Graphite(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 400)
 		return
 	}
+	SendUDP(m.Metric)
 	fmt.Println(m.Metric)
 
+}
+
+func SendUDP(s string) {
+	conn, err := net.Dial("udp", "statsite:8125")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer conn.Close()
+	fmt.Println("trying to send:", s)
+	conn.Write([]byte(s))
 }
 
